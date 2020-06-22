@@ -1,0 +1,227 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Blue Prism v2",
+    "description": "v2 BP connector",
+    "version": "2.0"
+  },
+  "host": "Insert Azure Function Host Here",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/api/BluePrismRestInterface": {
+      "post": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetProcessSchema",
+                "value-path": "schema/ProcessOutputs",
+                "parameters": {
+                  "code": {
+                    "parameter": "code"
+                  },
+                  "resourceName": {
+                    "parameter": "resourceName"
+                  },
+                  "processName": {
+                    "parameter": "processName"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Start Process",
+        "operationId": "StartProcess",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "type": "string",
+            "default": "Insert Azure Function Key",
+            "required": true,
+            "x-ms-visibility": "important",
+            "format": "",
+            "x-ms-summary": "API Code"
+          },
+          {
+            "name": "resourceName",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "default": "Default Host Name of Blue Prism Resource Agent",
+            "x-ms-visibility": "important",
+            "description": "Resource Name",
+            "x-ms-summary": "Resource Name"
+          },
+          {
+            "name": "processName",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetProcessList",
+              "value-path": "ProcessName",
+              "value-title": "ProcessName",
+              "parameters": {
+                "resourceName": {
+                  "parameter": "resourceName"
+                },
+                "code": {
+                  "parameter": "code"
+                },
+                "Content-Type": "application/json"
+              }
+            },
+            "x-ms-visibility": "important",
+            "description": "Process Name",
+            "x-ms-summary": "Process Name"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "application/json",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "name": "RequestBody",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetProcessSchema",
+                "value-path": "schema/ProcessInputs",
+                "parameters": {
+                  "code": {
+                    "parameter": "code"
+                  },
+                  "resourceName": {
+                    "parameter": "resourceName"
+                  },
+                  "processName": {
+                    "parameter": "processName"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "x-ms-visibility": "important"
+      }
+    },
+    "/api/GetProcessList": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ProcessName": {
+                    "type": "string",
+                    "description": "ProcessName"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "GetProcessList",
+        "operationId": "GetProcessList",
+        "description": "Get list of processes from BP resource",
+        "parameters": [
+          {
+            "name": "resourceName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "application/json",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/api/GetProcessSchema": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "summary": "GetProcessSchema",
+        "operationId": "GetProcessSchema",
+        "description": "Get input & output values for selected process",
+        "parameters": [
+          {
+            "name": "resourceName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "processName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "application/json",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "x-ms-visibility": "internal"
+      }
+    }
+  },
+  "definitions": {},
+  "responses": {},
+  "securityDefinitions": {
+    "basic_auth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basic_auth": []
+    }
+  ],
+  "tags": []
+}
